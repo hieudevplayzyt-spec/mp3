@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hai Bà Trưng — Hào Khí Non Sông</title>
+
+<style>
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.container-wrapper-genially {
+    position: fixed !important;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.genially-embed {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.music-button {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    z-index: 9999;
+    width: 54px;
+    height: 54px;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 50%;
+    background: rgba(40,20,20,0.75);
+    color: #f5dfb0;
+    backdrop-filter: blur(12px);
+    cursor: pointer;
+    font-size: 23px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    transition: transform 0.2s, background 0.2s;
+}
+
+.music-button:hover {
+    transform: scale(1.1);
+    background: rgba(100,35,35,0.9);
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bgmusic" src="music.mp3" loop></audio>
+
+<button class="music-button" id="musicButton"
+        aria-label="Play music"
+        title="Play / Pause music">
+    ▶
+</button>
+
+<script>
+const music = document.getElementById("bgmusic");
+const button = document.getElementById("musicButton");
+
+music.volume = 0.12;
+
+function updateButton() {
+    button.textContent = music.paused ? "▶" : "♫";
+    button.setAttribute(
+        "aria-label",
+        music.paused ? "Play music" : "Pause music"
+    );
+}
+
+async function startMusic() {
+    if (!music.paused) return;
+
+    try {
+        await music.play();
+        updateButton();
+    } catch (error) {
+        console.log("Autoplay blocked:", error);
+    }
+}
+
+// Try autoplay immediately
+startMusic();
+
+// First click or tap on the page attempts playback
+document.addEventListener("click", startMusic, { once: true });
+
+// Music button toggles playback
+button.addEventListener("click", async (event) => {
+    event.stopPropagation();
+
+    if (music.paused) {
+        await startMusic();
+    } else {
+        music.pause();
+        updateButton();
+    }
+});
+
+music.addEventListener("play", updateButton);
+music.addEventListener("pause", updateButton);
+</script>
+
+<!-- ORIGINAL GENIALLY SCRIPT EMBED -->
+<div class="container-wrapper-genially" style="position: relative; min-height: 400px; max-width: 100%;"><video class="loader-genially" autoplay="autoplay" loop="loop" playsinline="playsInline" muted="muted" style="position: absolute;top: 45%;left: 50%;transform: translate(-50%, -50%);width: 80px;height: 80px;margin-bottom: 10%"><source src="https://static.genially.com/resources/loader-default-rebranding.mp4" type="video/mp4" />Your browser does not support the video tag.</video><div id="6aff04b0a7d6685cafd2f4e7" class="genially-embed" style="margin: 0px auto; position: relative; height: auto; width: 100%;"></div></div><script>(function (d) { var js, id = "genially-embed-js", ref = d.getElementsByTagName("script")[0]; if (d.getElementById(id)) { return; } js = d.createElement("script"); js.id = id; js.async = true; js.src = "https://view.genially.com/static/embed/embed.js"; ref.parentNode.insertBefore(js, ref); }(document));</script>
+
+</body>
+</html>
